@@ -1,76 +1,56 @@
-import os 
+import os
 import csv
+filename='budget_data.csv'
+budget_data = os.path.join("Resources","budget_data.csv")
+#Variables
+total=0
+date=[]
+months=0
+total_months=0
+monthly_profit_losses=[]
+increase=["",0]
+decrease=["",0]
+change=0
+total_change_profit_losses=0
+previous_revenue=0
+with open(budget_data, newline="") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    csv_header=next(csvreader)
+    #Read rows of data starting next to header: 
+    for row in csvreader:
+        date.append(row[0])
+        monthly_profit_losses.append(row[1])
+        #Total months:
+        months+=1
+        total_months+= months+int(row[1])
+        #Total Change:
+        change=int(row[1])-previous_revenue
+        if previous_revenue==0:
+            change=0
+            previous_revenue=int(row[1])
+            total_change_profit_losses += change
+            #Evaluate Increase
+            if change > int(increase[1]):
+                increase[1]=change
+                increase[0]=row[0]
+                #Evaluate Decrease
+                if change<int(decrease[1]):
+                    decrease[1]=change
+                    decrease[0]=row[0]
+                    total_change_profit_losses=total_change_profit_losses/(months-1)
+               
 
-csvpath = os.path.join("Resources", "election_data.csv")
-pathout = os.path.join("Analysis", "election_results.txt")
+    # Profit_losses
+    # change_profit_losses = int(row[1]) - current_profit_losses
+    # current_profit_losses = int(row[1])
+    # total = total + current_profit_losses
+      
+    print(f'Financial Analysis')
+    print(f'-----------------------------')
+    print(f'Total months: {total_months}')
+    print(f'Total: {total_change_profit_losses}')
+    print(f'Average change: ${change:.2f}')
+    print(f'Greatest Increase in Profits: {increase}')
+    print(f'Greatest Decrease in Profits: {decrease}')
 
-# Variables to store data
-candidates=[]
-votes=[]
-county=[]
-Charles_Casper_Stockham=[]
-Diana_DeGette=[]
-Raymon_Anthony_Doane=[]
-
-#create three columns: 
-with open(csvpath) as csvfile:
-	csvreader=csv.reader(csvfile, delimiter=',')
-	csv_header=next(csvreader)
-
-#Read each row of data after the header and loop through rows
-for row in csvreader:
-	votes.append(row[0])
-	county.append(row[1])
-	candidates.append(row[2])
-
-    # The total number of votes cast   
-votes_total=len(row[1])
-
-
-# A complete list of candidates who received votes and the
-for can in candidates:
-	if can=="Charles_Casper_Stockham":
-		Charles_Casper_Stockham.append(candidates)
-		votes_Charles_Casper_Stockham=len (Charles_Casper_Stockham)
-	elif can=="Diana_DeGette":
-		Diana_DeGette.append(candidates)
-		votes_Diana_DeGette=len(Diana_DeGette)
-		can=="Raymon_Anthony_Doane"
-		Raymon_Anthony_Doane.append(candidates)
-		votes_Raymon_Anthony_Doane=len(Raymon_Anthony_Doane)
-
-# The percentage of votes each candidate won.
-per_Charles_Casper_Stockham=round(((votes_Charles_Casper_Stockham/votes_total)*100), 2) 
-per_Diana_DeGette=round(((votes_Diana_DeGette/votes_total)*100), 2)
-per_Raymon_Anthony_Doane=round(((votes_Raymon_Anthony_Doane/votes_total)*100), 2)
-
-
-# The winner of the election based on popular vote. 
-def winner (candidates):
-	return max(set (candidates), key=candidates.count)
-
-# Print the analysis to the terminal.
-
-print(f'Election Results')
-print('------------------')
-print(f'Total votes: {votes}')
-print(f'-----------------')
-print(f'Charles_Casper_Stockham: %{per_Charles_Casper_Stockham} {votes_Charles_Casper_Stockham}')
-print(f'Diana_DeGette: %{per_Diana_DeGette} {votes_Diana_DeGette}')
-print(f'Raymon_Anthony_Doane: %{per_Raymon_Anthony_Doane} {votes_Raymon_Anthony_Doane}')
-print('------------------')
-print(f'Winner: {winner}')
-print('-------------------')
-
-# Text file with the results 
-with open(pathout, "w") as results:
-	results.write(f"Election Results\n")
-	results.write("----------------------\n")
-	results.write(f"Total votes: {votes}\n")
-	results.write(f"----------------------\n")
-	results.write(f"Charles_Casper_Stockham: %{per_Charles_Casper_Stockham} ({votes_Charles_Casper_Stockham})\n")
-	results.write(f"Diana_DeGette: %{per_Diana_DeGette} ({votes_Diana_DeGette})\n")
-	results.write(f"Raymon_Anthony_Doane: %{per_Raymon_Anthony_Doane} ({votes_Raymon_Anthony_Doane})\n")
-	results.write("----------------------")
-	results.write(f"Winner: ({winner})\n")
-	results.write(f"----------------------")
+   
