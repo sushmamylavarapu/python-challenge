@@ -38,13 +38,6 @@ with open(budget_data, newline="") as csvfile:
                     decrease[1]=change
                     decrease[0]=row[0]
                     total_change_profit_losses=total_change_profit_losses/(months-1)
-               
-
-    # Profit_losses
-    # change_profit_losses = int(row[1]) - current_profit_losses
-    # current_profit_losses = int(row[1])
-    # total = total + current_profit_losses
-      
     print(f'Financial Analysis')
     print(f'-----------------------------')
     print(f'Total months: {total_months}')
